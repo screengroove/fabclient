@@ -1,72 +1,41 @@
 import Expo from 'expo';
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { NavigationProvider, StackNavigation } from '@expo/ex-navigation';
-import { FontAwesome } from '@expo/vector-icons';
+import { StyleSheet, Text, View } from 'react-native';
+import { TabNavigator, StackNavigator } from 'react-navigation';
+import { Provider } from 'react-redux';
+import firebase from 'firebase';
+import SignUpScreen from './screens/SignUpScreen';
+import SignInScreen from './screens/SignInScreen';
+import WelcomeScreen from './screens/WelcomeScreen';
 
-import Router from './navigation/Router';
-import cacheAssetsAsync from './utilities/cacheAssetsAsync';
-
-class AppContainer extends React.Component {
-  state = {
-    appIsReady: false,
-  };
-
-  componentWillMount() {
-    this._loadAssetsAsync();
-  }
-
-  async _loadAssetsAsync() {
-    try {
-      await cacheAssetsAsync({
-        images: [require('./assets/images/expo-wordmark.png')],
-        fonts: [
-          FontAwesome.font,
-          { 'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf') },
-        ],
-      });
-    } catch (e) {
-      console.warn(
-        'There was an error caching assets (see: main.js), perhaps due to a ' +
-          'network timeout, so we skipped caching. Reload the app to try again.'
-      );
-      console.log(e.message);
-    } finally {
-      this.setState({ appIsReady: true });
-    }
+class App extends React.Component {
+  componentDidMount() {
+    const config = {
+      apiKey: "AIzaSyDnXFm1gxobxN_oyyj85Iq6h9yhx1XrzRA",
+      authDomain: "fabclient-6c934.firebaseapp.com",
+      databaseURL: "https://fabclient-6c934.firebaseio.com",
+      projectId: "fabclient-6c934",
+      storageBucket: "fabclient-6c934.appspot.com",
+      messagingSenderId: "889308411831"
+    };
+    firebase.initializeApp(config);
   }
 
   render() {
-    if (this.state.appIsReady) {
-      return (
-        <View style={styles.container}>
-          <NavigationProvider router={Router}>
-            <StackNavigation
-              id="root"
-              initialRoute={Router.getRoute('rootNavigation')}
-            />
-          </NavigationProvider>
-
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          {Platform.OS === 'android' &&
-            <View style={styles.statusBarUnderlay} />}
-        </View>
-      );
-    } else {
-      return <Expo.AppLoading />;
-    }
+    const MainNavigator = TabNavigator({
+      signup: {screen: SignUpScreen},
+      signin: {screen: SignInScreen},
+      main: {
+         screen: TabNavigator({
+            welcomeX: { screen: WelcomeScreen }
+         })
+      },
+    });
+    return (
+      <MainNavigator />
+    )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  statusBarUnderlay: {
-    height: 24,
-    backgroundColor: 'rgba(0,0,0,0.2)',
-  },
-});
 
-Expo.registerRootComponent(AppContainer);
+Expo.registerRootComponent(App);

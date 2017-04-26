@@ -14,14 +14,15 @@ class SignInForm extends Component {
       let { data } = await axios.post(`${ROOT_URL}/verifyOneTimePassword`, {
         phone: this.state.phone, code: this.state.code
       });
-
-      firebase.auth().signInWithCustomToken(data.token);
+      await firebase.auth().signInWithCustomToken(data.token);
+      this.props.goTo.navigate('main')
     } catch (err) {
       console.log(err);
     }
   }
 
   render() {
+    console.log("PROPS", this.props.goTo.navigate)
     return (
       <View>
         <View style={{ marginBottom: 10 }}>
