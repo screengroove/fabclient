@@ -1,13 +1,19 @@
-import React from 'react';
+import React , { Component } from 'react';
+import { connect } from 'react-redux';
 import { View, StyleSheet, Button } from 'react-native';
 import SignInForm from '../components/SignInForm';
+import * as actions from '../actions';
 
-export default class SignInScreen extends React.Component {
+ class SignInScreen extends Component {
   static route = {
     navigationBar: {
       title: 'Sign In',
     },
   };
+
+  componentWillMount(){
+    this.props.authUser();
+  }
 
   render() {
     const {navigate} = this.props.navigation;
@@ -24,6 +30,12 @@ export default class SignInScreen extends React.Component {
     );
   }
 }
+
+function mapStateToProps({ user }) {
+  return { profile: user.profile };
+}
+
+export default connect(mapStateToProps, actions)(SignInScreen);
 
 const styles = StyleSheet.create({
   container: {

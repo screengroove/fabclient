@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, AsyncStorage } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import axios from 'axios';
 import firebase from 'firebase';
@@ -15,7 +15,9 @@ class SignInForm extends Component {
         phone: this.state.phone, code: this.state.code
       });
       await firebase.auth().signInWithCustomToken(data.token);
-      this.props.goTo.navigate('main')
+      await AsyncStorage.setItem('token', JSON.stringify(data.token));
+      await console.log("GET TOKEN", AsyncStorage.getItem('token') )
+      //this.props.goTo.navigate('main')
     } catch (err) {
       console.log(err);
     }

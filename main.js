@@ -1,12 +1,14 @@
 import Expo from 'expo';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { TabNavigator, StackNavigator } from 'react-navigation';
+import { TabNavigator, StackNavigator, StackRouter } from 'react-navigation';
 import { Provider } from 'react-redux';
 import firebase from 'firebase';
 import SignUpScreen from './screens/SignUpScreen';
 import SignInScreen from './screens/SignInScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
+import store from './store';
 
 class App extends React.Component {
   componentDidMount() {
@@ -24,15 +26,19 @@ class App extends React.Component {
   render() {
     const MainNavigator = TabNavigator({
       signup: {screen: SignUpScreen},
-      signin: {screen: WelcomeScreen},
+      signin: {screen: SignInScreen},
+      profile: {screen: ProfileScreen},
       main: {
          screen: TabNavigator({
             welcomeX: { screen: WelcomeScreen }
          })
       },
-    });
+    })
+
     return (
-      <MainNavigator />
+      <Provider store={store}>
+       <MainNavigator />
+     </Provider>
     )
   }
 }

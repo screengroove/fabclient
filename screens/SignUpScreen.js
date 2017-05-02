@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet,TouchableHighlight,Text } from 'react-native';
 import SignUpForm from '../components/SignUpForm';
 
 export default class SignUpScreen extends React.Component {
@@ -10,9 +10,16 @@ export default class SignUpScreen extends React.Component {
   };
 
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <View>
-        <SignUpForm />
+        <SignUpForm goTo={this.props.navigation} />
+        <TouchableHighlight
+          underlayColor={'#4e4273'}
+          onPress={() => navigate('SignIn')}
+          >
+          <Text style={{color: '#000'}}>Sign In</Text>
+        </TouchableHighlight>
       </View>
     );
   }
