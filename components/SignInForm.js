@@ -16,7 +16,7 @@ class SignInForm extends Component {
       });
       await firebase.auth().signInWithCustomToken(data.token);
       await AsyncStorage.setItem('token', JSON.stringify(data.token));
-      await console.log("GET TOKEN", AsyncStorage.getItem('token') )
+      await console.log("SET TOKEN", AsyncStorage.getItem('token') )
       //this.props.goTo.navigate('main')
     } catch (err) {
       console.log(err);
