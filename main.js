@@ -24,16 +24,26 @@ class App extends React.Component {
   }
 
   render() {
-    const MainNavigator = TabNavigator({
-      signup: {screen: SignUpScreen},
-      signin: {screen: SignInScreen},
-      profile: {screen: ProfileScreen},
-      main: {
-         screen: TabNavigator({
-            welcomeX: { screen: WelcomeScreen }
-         })
+    const MainNavigator = TabNavigator (
+      {
+        signup: { screen: SignUpScreen },
+        signin: { screen: SignInScreen },
+        profile: { screen: ProfileScreen },
+        main: {
+          screen: TabNavigator({
+            chat: { screen: WelcomeScreen }
+          })
+        }
       },
-    })
+      {
+        tabBarOptions: {
+          activeTintColor: "#e91e63",
+          style:{
+            display: 'none',
+          }
+        }
+      }
+    );
 
     return (
       <Provider store={store}>

@@ -1,10 +1,12 @@
 import React from 'react';
-import { View,
+import {
+   View,
     Text,
     StyleSheet,
     Dimensions,
     TouchableHighlight,
-    TextInput, } from 'react-native';
+    TextInput,
+  } from 'react-native';
 import SignUpForm from '../components/SignUpForm';
 import SendBird from 'sendbird';
 var sb = null;
@@ -29,11 +31,9 @@ export default class WelcomeScreen extends React.Component {
     channel: null,
   }
   componentDidMount() {
-    console.log("sB", this.sb)
-
-     sb.connect('patrick', function(user, error) {
-       console.log("CONNECT CB", user)
-     });
+    //  sb.connect('patrick', function(user, error) {
+    //    console.log("CONNECT CB", user)
+    //  });
      var ChannelHandler = new sb.ChannelHandler();
      //ChannelHandler.onMessageReceived = function (channel, message) { };
   }

@@ -20,8 +20,19 @@ class ProfileScreen extends Component {
     zip: '',
   }
 
+  componentDidMount(){
+    if(this.props.profile){
+      console.log("Has Profile??", this.props.profile.first_name)
+      this.props.navigation.navigate('main');
+    } else{
+      console.log("NO Profile??")
+    }
+  }
+
   handleSubmit = () => {
-    this.props.setProfile(this.state)
+    const { uid } = this.props;
+    this.props.setProfile(uid, this.state)
+    this.props.navigation.navigate('main');
   }
 
   render() {
@@ -29,43 +40,44 @@ class ProfileScreen extends Component {
 
     return (
       <View style={styles.container} >
-      <Text style={styles.title}>Please complete your profile</Text>
-      <FormLabel>First Name</FormLabel>
-      <FormInput
-        value={this.state.first_name}
-        onChangeText={first_name => this.setState({ first_name })}
-      />
+        <Text style={styles.title}>Please complete your profile</Text>
+        <FormLabel>First Name</FormLabel>
+        <FormInput
+          value={this.state.first_name}
+          onChangeText={first_name => this.setState({ first_name })}
+          maxLength = {15}
+        />
 
-      <FormLabel>Last Name</FormLabel>
-      <FormInput
-        value={this.state.last_name}
-        onChangeText={last_name => this.setState({ last_name })}
-      />
+        <FormLabel>Last Name</FormLabel>
+        <FormInput
+          value={this.state.last_name}
+          onChangeText={last_name => this.setState({ last_name })}
+          maxLength = {20}
+        />
 
-      <FormLabel>Street</FormLabel>
-      <FormInput
-        value={this.state.street}
-        onChangeText={street => this.setState({ street })}
-      />
-      <FormLabel>City</FormLabel>
-      <FormInput
-        value={this.state.city}
-        onChangeText={city => this.setState({ city })}
-      />
-      <FormLabel>Zip Code</FormLabel>
-      <FormInput
-        value={this.state.zip}
-        onChangeText={zip => this.setState({ zip })}
-      />
-      <Button style={styles.submitBtn} onPress={this.handleSubmit} title="Submit" />
-
+        <FormLabel>Street</FormLabel>
+        <FormInput
+          value={this.state.street}
+          onChangeText={street => this.setState({ street })}
+        />
+        <FormLabel>City</FormLabel>
+        <FormInput
+          value={this.state.city}
+          onChangeText={city => this.setState({ city })}
+        />
+        <FormLabel>Zip Code</FormLabel>
+        <FormInput
+          value={this.state.zip}
+          onChangeText={zip => this.setState({ zip })}
+        />
+        <Button style={styles.submitBtn} onPress={this.handleSubmit}    title="Submit" />
       </View>
     );
   }
 }
 
 function mapStateToProps({ user }) {
-  return { isAuthed: user.isAuthed };
+  return { isAuthed: user.isAuthed, uid: user.uid, profile: user.profile };
 }
 
 export default connect(mapStateToProps, actions)(ProfileScreen);

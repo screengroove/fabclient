@@ -3,11 +3,11 @@ import { View, StyleSheet,TouchableHighlight,Text } from 'react-native';
 import SignUpForm from '../components/SignUpForm';
 
 export default class SignUpScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      title: 'Sign Up',
-    },
-  };
+  // static route = {
+  //   navigationBar: {
+  //     title: 'Sign Up',
+  //   },
+  // };
 
   render() {
     const {navigate} = this.props.navigation;

@@ -6,14 +6,22 @@ export const authUser = () => async dispatch => {
   let token = await AsyncStorage.getItem('token');
   if (token !== null) {
     await firebase.auth().signInWithCustomToken(token)
-    .then(resp => console.log("RESP", resp))
-    dispatch({type: 'IS_AUTHED', payload: token});
+    .then(resp => dispatch({type: 'IS_AUTHED', payload: resp.uid}))
+    //.then(resp => console.log("FIREBASE AUTH", resp))
   } else {
-    return false
+    console.error("authUser Failed")
   }
 
 }
 
-export const setProfile = (profile) => async dispatch => {
-  console.log("SET PROFILE", profile);
+export const setProfile = (uid, profile) => async dispatch => {
+  console.log("SET PROFILE", uid ,profile);
+  firebase.database().ref('users/' + uid + '/profile').set({
+   first_name: profile.first_name,
+   last_name: profile.last_name,
+   street: profile.street,
+   city: profile.city,
+   zip: profile.zip,
+ })
+ .then(() => dispatch({type: 'SET_PROFILE', payload: profile}))
 }

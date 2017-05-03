@@ -32,11 +32,6 @@ import * as actions from '../actions';
     return (
       <View>
         <SignInForm goTo={this.props.navigation} />
-         <Button
-          onPress={() => navigate('main')}
-          title="Go to Brent's profile"
-        />
-
       </View>
     );
   }
