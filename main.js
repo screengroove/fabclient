@@ -9,6 +9,12 @@ import SignInScreen from './screens/SignInScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import store from './store';
+import Reactotron from 'reactotron-react-native'
+
+Reactotron
+  .configure() // controls connection & communication settings
+  .useReactNative() // add all built-in react native plugins
+  .connect() // let's connect!
 
 class App extends React.Component {
   componentDidMount() {
@@ -39,7 +45,7 @@ class App extends React.Component {
         tabBarOptions: {
           activeTintColor: "#e91e63",
           style:{
-            display: 'none',
+            //display: 'none',
           }
         }
       }

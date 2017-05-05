@@ -3,15 +3,13 @@ import firebase from 'firebase';
 import {AsyncStorage} from 'react-native';
 
 export const authUser = () => async dispatch => {
-  let token = await AsyncStorage.getItem('token');
-  if (token !== null) {
-    await firebase.auth().signInWithCustomToken(token)
+  try {
+    let token = await AsyncStorage.getItem('token');
+    firebase.auth().signInWithCustomToken(token)
     .then(resp => dispatch({type: 'IS_AUTHED', payload: resp.uid}))
-    //.then(resp => console.log("FIREBASE AUTH", resp))
-  } else {
-    console.error("authUser Failed")
+  } catch(error) {
+    console.error("authUser fail")
   }
-
 }
 
 export const setProfile = (uid, profile) => async dispatch => {

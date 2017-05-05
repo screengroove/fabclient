@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { Component } from 'react';
 import {
    View,
     Text,
@@ -7,18 +7,19 @@ import {
     TouchableHighlight,
     TextInput,
   } from 'react-native';
-import SignUpForm from '../components/SignUpForm';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
+import { makeNickname } from '../helpers/utils';
 import SendBird from 'sendbird';
 var sb = null;
 
 const sb = new SendBird({
   appId: '04EE84B5-4B5E-4944-A110-7C78ECA24529'
 });
-   //sb = SendBird.getInstance();
 
 const ChannelHandler = new sb.ChannelHandler();
 
-export default class WelcomeScreen extends React.Component {
+class WelcomeScreen extends Component {
   static route = {
     navigationBar: {
       title: 'Welcome',
@@ -30,45 +31,48 @@ export default class WelcomeScreen extends React.Component {
     messageList: [],
     channel: null,
   }
+
+
   componentDidMount() {
-    //  sb.connect('patrick', function(user, error) {
-    //    console.log("CONNECT CB", user)
-    //  });
-     var ChannelHandler = new sb.ChannelHandler();
-     //ChannelHandler.onMessageReceived = function (channel, message) { };
+    var _SELF = this;
+    const { uid , profile} = this.props;
+    const nickName = makeNickname(profile);
+     sb.connect(uid, function(user, error) {
+       sb.updateCurrentUserInfo(nickName, function(response, error) {
+         console.log(response, error);
+        });
+     });
   }
 
   onSendPress = () => {
     console.log(this.state.message);
-    this.setState({message: ''});
-      this.state.channel.sendUserMessage("YOYOYO", '', '', function(message, error){
+    this.state.channel.sendUserMessage("YOYOYO", '', '', function(message, error){
       if (error) {
           console.error(error);
           return;
       }
-
       // onSent
       console.log("MSG",message);
-  });
-
+    });
+    this.setState({message: ''});
   }
 
-  onPressCreateChannel = ()  => {
-    console.log("onPressCreateChannel")
+  createChannel = ()  => {
+    console.log("CREATE CHANNEL")
     var _SELF = this;
-    var userIds = ['timmy', 'patrick'];
+    var userIds = [this.props.uid, 'patrick'];
     // distinct is false
-    sb.GroupChannel.createChannelWithUserIds(userIds, false, "NewGroupEE", '', '', function(createdChannel, error) {
-    if (error) {
-        console.error(error);
-        return;
-    }
-    _SELF.setState({
-      channel: createdChannel
-    })
+    sb.GroupChannel.createChannelWithUserIds([this.props.uid, 'patrick'], false, "NewGroupEE", '', '', function(createdChannel, error) {
+      if (error) {
+          console.error(error);
+          return;
+      }
+      _SELF.setState({
+        channel: createdChannel
+      })
 
-    console.log(_SELF.state.channel);
-});
+      console.log(_SELF.state.channel);
+    });
   }//createChannel
 
   render() {
@@ -78,7 +82,7 @@ export default class WelcomeScreen extends React.Component {
           <Text style={{color: '#000'}}>Chat</Text>
           <TouchableHighlight
             underlayColor={'#4e4273'}
-            onPress={() => this.onPressCreateChannel()}
+            onPress={() => this.createChannel()}
             >
             <Text style={{color: '#000'}}>Create Channel</Text>
           </TouchableHighlight>
@@ -105,6 +109,12 @@ export default class WelcomeScreen extends React.Component {
     );
   }
 }
+
+function mapStateToProps({ user }) {
+  return { isAuthed: user.isAuthed, uid: user.uid, profile: user.profile };
+}
+
+export default connect(mapStateToProps, actions)(WelcomeScreen);
 
 const styles = StyleSheet.create({
     container: {

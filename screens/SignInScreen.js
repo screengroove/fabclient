@@ -11,20 +11,20 @@ import * as actions from '../actions';
     },
   };
 
-  componentWillMount(){
-    console.log("PROPS", this.props)
-    this.props.authUser();
-     this.onAuthComplete(this.props);
-  }
-  componentWillReceiveProps(nextProps) {
-    this.onAuthComplete(nextProps);
-  }
-
-  onAuthComplete(props) {
-    if (props.isAuthed) {
-      this.props.navigation.navigate('profile');
-    }
-  }
+  // componentWillMount(){
+  //   console.log("PROPS", this.props)
+  //   this.props.authUser();
+  //    this.onAuthComplete(this.props);
+  // }
+  // componentWillReceiveProps(nextProps) {
+  //   this.onAuthComplete(nextProps);
+  // }
+  //
+  // onAuthComplete(props) {
+  //   if (props.isAuthed) {
+  //     this.props.navigation.navigate('profile');
+  //   }
+  // }
 
   render() {
     const {navigate} = this.props.navigation;
