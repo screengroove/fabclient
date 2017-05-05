@@ -20,13 +20,17 @@ class SignUpForm extends Component {
 
   render() {
     return (
-        <View >
+        <View style={styles.container} >
           <FormLabel>Enter Phone Number</FormLabel>
           <FormInput
             value={this.state.phone}
             onChangeText={phone => this.setState({ phone })}
           />
-          <Button onPress={this.handleSubmit} title="Submit" />
+          <Button
+            buttonStyle={styles.submit}
+            onPress={this.handleSubmit}
+            title="Submit"
+          />
         </View>
     );
   }
@@ -34,3 +38,13 @@ class SignUpForm extends Component {
 
 
 export default SignUpForm;
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 40,
+  },
+  submit: {
+    marginTop: 30,
+    backgroundColor: '#3f8db0',
+  },
+});
