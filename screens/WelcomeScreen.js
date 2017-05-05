@@ -41,6 +41,7 @@ class WelcomeScreen extends Component {
        sb.updateCurrentUserInfo(nickName, function(response, error) {
          console.log(response, error);
         });
+        _SELF.createChannel(nickName);
      });
   }
 
@@ -57,12 +58,12 @@ class WelcomeScreen extends Component {
     this.setState({message: ''});
   }
 
-  createChannel = ()  => {
+  createChannel = (channelName)  => {
     console.log("CREATE CHANNEL")
     var _SELF = this;
     var userIds = [this.props.uid, 'patrick'];
     // distinct is false
-    sb.GroupChannel.createChannelWithUserIds([this.props.uid, 'patrick'], false, "NewGroupEE", '', '', function(createdChannel, error) {
+    sb.GroupChannel.createChannelWithUserIds(userIds, false, channelName, '', '', function(createdChannel, error) {
       if (error) {
           console.error(error);
           return;
