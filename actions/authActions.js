@@ -2,13 +2,27 @@ import axios from 'axios';
 import firebase from 'firebase';
 import {AsyncStorage} from 'react-native';
 
+export const savePhoneNum = (phoneNum) => {
+  return {
+    type: 'PHONE_NUM',
+    payload: phoneNum
+  }
+}
+
 export const authUser = () => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('token');
-    firebase.auth().signInWithCustomToken(token)
-    .then(resp => dispatch({type: 'IS_AUTHED', payload: resp.uid}))
+    let resp = await firebase.auth().signInWithCustomToken(token)
+    dispatch({type: 'IS_AUTHED', payload: resp.uid})
   } catch(error) {
     console.error("authUser fail")
+  }
+}
+
+export const authAndSetUid = (uid) =>  {
+  return {
+    type: 'SET_UID',
+    payload: uid
   }
 }
 

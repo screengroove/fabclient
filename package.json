@@ -19,6 +19,7 @@
     "react": "16.0.0-alpha.6",
     "react-native": "https://github.com/exponent/react-native/archive/sdk-16.0.0.tar.gz",
     "react-native-elements": "^0.11.1",
+    "react-native-gifted-chat": "^0.1.4",
     "react-navigation": "git+https://github.com/react-community/react-navigation.git",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",

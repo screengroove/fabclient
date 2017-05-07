@@ -22,7 +22,7 @@ class ProfileScreen extends Component {
 
   componentDidMount(){
     if(this.props.profile){
-      console.log("Has Profile??", this.props.profile.first_name)
+      console.log("Has NO Profile", this.props.profile.first_name)
       this.props.navigation.navigate('main');
     } else{
       console.log("NO Profile??")

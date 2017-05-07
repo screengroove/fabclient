@@ -10,6 +10,14 @@ export function user(state = initialState, action) {
   switch (action.type) {
     case REHYDRATE:
       return action.payload.user || [];
+    case 'PHONE_NUM':
+        return { phoneNum: action.payload };
+    case 'SET_UID':
+        return {
+          ...state,
+          isAuthed: true,
+          uid: action.payload
+        };
     case AUTH_SUCCESS:
       return { token: action.payload };
     case 'IS_AUTHED':

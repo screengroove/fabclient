@@ -12,6 +12,7 @@ class SignUpForm extends Component {
     try {
       await axios.post(`${ROOT_URL}/createUser`, { phone: this.state.phone });
       await axios.post(`${ROOT_URL}/requestOneTimePassword`, { phone: this.state.phone });
+      await this.props.savePhoneNum(this.state.phone)
       await this.props.goTo.navigate('signin')
     } catch (err) {
       console.log(err);
@@ -25,6 +26,7 @@ class SignUpForm extends Component {
           <FormInput
             value={this.state.phone}
             onChangeText={phone => this.setState({ phone })}
+            keyboardType={'numeric'}
           />
           <Button
             buttonStyle={styles.submit}

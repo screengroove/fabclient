@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     TextInput,
   } from 'react-native';
+import { GiftedChat } from 'react-native-gifted-chat';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import { makeNickname } from '../helpers/utils';
@@ -28,7 +29,7 @@ class WelcomeScreen extends Component {
 
   state = {
     message: '',
-    messageList: [],
+    messages: [],
     channel: null,
   }
 
@@ -36,18 +37,43 @@ class WelcomeScreen extends Component {
   componentDidMount() {
     var _SELF = this;
     const { uid , profile} = this.props;
-    const nickName = makeNickname(profile);
+     //const nickName = makeNickname(profile);
+     const nickName = 'NICKNAME';
      sb.connect(uid, function(user, error) {
        sb.updateCurrentUserInfo(nickName, function(response, error) {
          console.log(response, error);
-        });
-        _SELF.createChannel(nickName);
-     });
+       });
+         _SELF.createChannel(nickName);
+      });
+      this.setState({
+      messages: [
+        {
+          _id: 1,
+          text: 'Hello developer',
+          createdAt: new Date(Date.UTC(2016, 7, 30, 17, 20, 0)),
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar: 'https://facebook.github.io/react/img/logo_og.png',
+          },
+        },
+      ],
+    });
   }
 
-  onSendPress = () => {
-    console.log(this.state.message);
-    this.state.channel.sendUserMessage("YOYOYO", '', '', function(message, error){
+  onSendPress = (messages = []) => {
+    let lastMsg = this.state.messages[0]['text']
+    this.setState((previousState) => {
+      return {
+        messages: GiftedChat.append(previousState.messages, messages),
+      };
+    }, ()=>{this.logMsg(this.state.messages[0]['text'])});
+
+  }
+
+  logMsg = (msg) => {
+    console.log("MESSAGE ARRAY", this.state.messages)
+    this.state.channel.sendUserMessage(msg, '', '', function(message, error){
       if (error) {
           console.error(error);
           return;
@@ -55,7 +81,6 @@ class WelcomeScreen extends Component {
       // onSent
       console.log("MSG",message);
     });
-    this.setState({message: ''});
   }
 
   createChannel = (channelName)  => {
@@ -79,33 +104,13 @@ class WelcomeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.chatContainer}>
-          <Text style={{color: '#000'}}>Chat</Text>
-          <TouchableHighlight
-            underlayColor={'#4e4273'}
-            onPress={() => this.createChannel()}
-            >
-            <Text style={{color: '#000'}}>Create Channel</Text>
-          </TouchableHighlight>
-
-        </View>
-        <View style={styles.inputContainer}>
-         <View style={styles.textContainer}>
-           <TextInput
-             style={styles.input}
-             value={this.state.message}
-             onChangeText={(text) => this.setState({message: text})}
-             />
-         </View>
-         <View style={styles.sendContainer}>
-           <TouchableHighlight
-             underlayColor={'#4e4273'}
-             onPress={() => this.onSendPress()}
-             >
-             <Text style={styles.sendLabel}>SEND</Text>
-           </TouchableHighlight>
-         </View>
-       </View>
+          <GiftedChat
+            messages={this.state.messages}
+            onSend={this.onSendPress}
+            user={{
+                _id: '2',
+            }}
+          />
       </View>
     );
   }
@@ -117,56 +122,18 @@ function mapStateToProps({ user }) {
 
 export default connect(mapStateToProps, actions)(WelcomeScreen);
 
+WelcomeScreen.defaultProps = {
+  first_name: 'FNAME',
+  last_name: 'LNAME',
+  uid: 'UID'
+};
+
+
 const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'stretch',
-      backgroundColor: '#ffffff'
-    },
-    topContainer: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      backgroundColor: '#6E5BAA',
-      paddingTop: 20,
-    },
-    chatContainer: {
-      flex: 11,
-      justifyContent: 'center',
-      alignItems: 'stretch'
-    },
-    inputContainer: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      alignItems: 'center',
-      backgroundColor: '#6E5BAA'
-    },
-    textContainer: {
-      flex: 1,
-      justifyContent: 'center'
-    },
-    sendContainer: {
-      justifyContent: 'flex-end',
-      paddingRight: 10
-    },
-    sendLabel: {
-      color: '#ffffff',
-      fontSize: 15
-    },
-    input: {
-      width: '90%',
-      color: '#555555',
-      paddingRight: 10,
-      paddingLeft: 10,
-      paddingTop: 5,
-      height: 32,
-      borderColor: '#6E5BAA',
-      borderWidth: 1,
-      borderRadius: 2,
-      alignSelf: 'center',
       backgroundColor: '#ffffff'
     },
   });

@@ -1,13 +1,18 @@
-import React from 'react';
+import React , { Component } from 'react';
 import { View, StyleSheet,TouchableHighlight,Text, Image } from 'react-native';
 import SignUpForm from '../components/SignUpForm';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
-export default class SignUpScreen extends React.Component {
+class SignUpScreen extends Component {
   // static route = {
   //   navigationBar: {
   //     title: 'Sign Up',
   //   },
   // };
+  componentWillMount(){
+      console.log("SIGN UP SCREEN PROPS", this.props)
+  }
 
   render() {
     const {navigate} = this.props.navigation;
@@ -15,11 +20,17 @@ export default class SignUpScreen extends React.Component {
       <View style={styles.container}>
         <Text style={styles.title}> Welcome to...</Text>
         <Image style={styles.logo}  source={require('../assets/images/logo.png')} />
-        <SignUpForm goTo={this.props.navigation} />
+        <SignUpForm goTo={this.props.navigation} savePhoneNum={this.props.savePhoneNum} />
       </View>
     );
   }
 }
+
+function mapStateToProps({ user }) {
+  return { user: user.isAuthed };
+}
+
+export default connect(mapStateToProps, actions)(SignUpScreen);
 
 const styles = StyleSheet.create({
   container: {
