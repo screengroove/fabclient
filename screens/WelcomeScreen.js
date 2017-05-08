@@ -105,10 +105,11 @@ class WelcomeScreen extends Component {
     return (
       <View style={styles.container}>
           <GiftedChat
+            isAnimated={true}
             messages={this.state.messages}
             onSend={this.onSendPress}
             user={{
-                _id: '2',
+                _id: '1',
             }}
           />
       </View>
