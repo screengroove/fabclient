@@ -32,6 +32,11 @@ export function user(state = initialState, action) {
           hasProfile: true,
           profile: action.payload
         }
+    case 'CHANNEL_URL':
+        return {
+          ...state,
+          channelUrl: action.payload
+        }
     default:
       return state;
   }

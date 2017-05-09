@@ -11,10 +11,10 @@ import WelcomeScreen from './screens/WelcomeScreen';
 import store from './store';
 import Reactotron from 'reactotron-react-native'
 
-Reactotron
-  .configure() // controls connection & communication settings
-  .useReactNative() // add all built-in react native plugins
-  .connect() // let's connect!
+// Reactotron
+//   .configure() // controls connection & communication settings
+//   .useReactNative() // add all built-in react native plugins
+//   .connect() // let's connect!
 
 class App extends React.Component {
   componentDidMount() {

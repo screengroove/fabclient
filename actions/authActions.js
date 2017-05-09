@@ -37,3 +37,10 @@ export const setProfile = (uid, profile) => async dispatch => {
  })
  .then(() => dispatch({type: 'SET_PROFILE', payload: profile}))
 }
+
+export const saveChannelUrl = ( url ) => {
+  return {
+    type: 'CHANNEL_URL',
+    payload: url
+  }
+}

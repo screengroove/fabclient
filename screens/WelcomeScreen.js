@@ -38,12 +38,13 @@ class WelcomeScreen extends Component {
     var _SELF = this;
     const { uid , profile} = this.props;
      //const nickName = makeNickname(profile);
-     const nickName = 'NICKNAME';
+     const nickName = 'UNIQUE CHANNEL';
      sb.connect(uid, function(user, error) {
        sb.updateCurrentUserInfo(nickName, function(response, error) {
          console.log(response, error);
        });
-         _SELF.createChannel(nickName);
+         //_SELF.createChannel(nickName);
+         _SELF.getMyChannels();
       });
       this.setState({
       messages: [
@@ -83,12 +84,45 @@ class WelcomeScreen extends Component {
     });
   }
 
+  getMyChannels = () => {
+    console.log("IN GET MY CHANNELS");
+    var _SELF = this;
+    const nickName = 'UNIQUE CHANNEL3';
+    var channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
+
+    if (channelListQuery.hasNext) {
+    channelListQuery.next(function(channelList, error){
+      if(channelList.length == 0){
+        _SELF.createChannel(nickName);
+      } else if (error) {
+          console.error(error);
+          return;
+      }
+      else{
+          console.log("HAS EXISTING CHANNELS", channelList);
+          sb.GroupChannel.getChannel('sendbird_group_channel_30487677_4f410cef5a2bb057729b1dcf3b6fff3d76ae176b', function(channel, error) {
+              if (error) {
+                  console.error(error);
+                  return;
+              }
+
+              // Successfully fetched the channel.
+              console.log("FETCHED CHANNEL",channel);
+              _SELF.setState({
+                channel: channel
+              })
+          });
+      }//esle
+    });
+  }
+}
+
   createChannel = (channelName)  => {
-    console.log("CREATE CHANNEL")
+    console.log("IN CREATE CHANNEL")
     var _SELF = this;
     var userIds = [this.props.uid, 'patrick'];
     // distinct is false
-    sb.GroupChannel.createChannelWithUserIds(userIds, false, channelName, '', '', function(createdChannel, error) {
+    sb.GroupChannel.createChannelWithUserIds(userIds, true, channelName, '', '', function(createdChannel, error) {
       if (error) {
           console.error(error);
           return;
@@ -96,6 +130,7 @@ class WelcomeScreen extends Component {
       _SELF.setState({
         channel: createdChannel
       })
+      _SELF.props.saveChannelUrl(createdChannel.url)
 
       console.log(_SELF.state.channel);
     });
