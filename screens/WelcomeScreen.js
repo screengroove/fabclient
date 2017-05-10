@@ -69,7 +69,6 @@ class WelcomeScreen extends Component {
         messages: GiftedChat.append(previousState.messages, messages),
       };
     }, ()=>{this.logMsg(this.state.messages[0]['text'])});
-
   }
 
   logMsg = (msg) => {
@@ -98,7 +97,7 @@ class WelcomeScreen extends Component {
           console.error(error);
           return;
       }
-      else{
+      else {
           console.log("HAS EXISTING CHANNELS", channelList);
           sb.GroupChannel.getChannel('sendbird_group_channel_30487677_4f410cef5a2bb057729b1dcf3b6fff3d76ae176b', function(channel, error) {
               if (error) {
@@ -112,7 +111,7 @@ class WelcomeScreen extends Component {
                 channel: channel
               })
           });
-      }//esle
+      }//else
     });
   }
 }

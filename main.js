@@ -8,6 +8,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import SignInScreen from './screens/SignInScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
+import ChatListing from './screens/ChatListing';
 import store from './store';
 import Reactotron from 'reactotron-react-native'
 
@@ -37,7 +38,8 @@ class App extends React.Component {
         profile: { screen: ProfileScreen },
         main: {
           screen: TabNavigator({
-            chat: { screen: WelcomeScreen }
+            chat: { screen: WelcomeScreen },
+            rooms: { screen: ChatListing }
           })
         }
       },
