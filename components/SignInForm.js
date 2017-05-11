@@ -22,6 +22,7 @@ class SignInForm extends Component {
       console.log("RESP TOKEN", resp)
       await AsyncStorage.setItem('token', data.token);
       this.props.setUid(resp.uid)
+      console.log("IN FORM SIGN IN HANDLE SUBMIT")
       this.props.goTo.navigate('profile')
     } catch (err) {
       console.log(err);

@@ -9,13 +9,14 @@ import SignInScreen from './screens/SignInScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import ChatListing from './screens/ChatListing';
+import Loader from './components/UI/Loader';
 import store from './store';
 import Reactotron from 'reactotron-react-native'
 
-// Reactotron
-//   .configure() // controls connection & communication settings
-//   .useReactNative() // add all built-in react native plugins
-//   .connect() // let's connect!
+Reactotron
+  .configure() // controls connection & communication settings
+  .useReactNative() // add all built-in react native plugins
+  .connect() // let's connect!
 
 class App extends React.Component {
   componentDidMount() {
@@ -28,6 +29,7 @@ class App extends React.Component {
       messagingSenderId: "889308411831"
     };
     firebase.initializeApp(config);
+    console.log("MAIN DID MOUNT")
   }
 
   render() {
@@ -55,7 +57,7 @@ class App extends React.Component {
 
     return (
       <Provider store={store}>
-       <MainNavigator />
+       <Loader />
      </Provider>
     )
   }
