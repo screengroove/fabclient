@@ -1,17 +1,12 @@
 import Expo from 'expo';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { TabNavigator, StackNavigator, StackRouter } from 'react-navigation';
 import { Provider } from 'react-redux';
 import firebase from 'firebase';
-import SignUpScreen from './screens/SignUpScreen';
-import SignInScreen from './screens/SignInScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import WelcomeScreen from './screens/WelcomeScreen';
-import ChatListing from './screens/ChatListing';
-import Loader from './components/UI/Loader';
 import store from './store';
+import MainNavigation from './navigation/MainNavigation';
 import Reactotron from 'reactotron-react-native'
+import Loader from './components/UI/Loader';
 
 Reactotron
   .configure() // controls connection & communication settings
@@ -33,31 +28,9 @@ class App extends React.Component {
   }
 
   render() {
-    const MainNavigator = TabNavigator (
-      {
-        signup: { screen: SignUpScreen },
-        signin: { screen: SignInScreen },
-        profile: { screen: ProfileScreen },
-        main: {
-          screen: TabNavigator({
-            chat: { screen: WelcomeScreen },
-            rooms: { screen: ChatListing }
-          })
-        }
-      },
-      {
-        tabBarOptions: {
-          activeTintColor: "#e91e63",
-          style:{
-            //display: 'none',
-          }
-        }
-      }
-    );
-
     return (
       <Provider store={store}>
-       <Loader />
+       <MainNavigation />
      </Provider>
     )
   }
